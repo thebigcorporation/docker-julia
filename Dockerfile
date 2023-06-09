@@ -1,5 +1,5 @@
 ARG BASE_IMAGE
-FROM $BASE_IMAGE as base
+FROM $BASE_IMAGE
 
 # SPDX-License-Identifier: GPL-2.0
 
@@ -33,9 +33,13 @@ RUN apt -y update -qq && apt -y upgrade && \
 
 WORKDIR /app
 COPY src/ .
-
-RUN julia -e 'using Pkg; Pkg.activate("."); Pkg.instantiate()'
+RUN chown $USERNAME:$USERGNAME *
 
 # we map the user owning the image so permissions for i/o will work
 USER $USERNAME
+
+# allows any julia pkgs included in this build to be precompiled 
+# with the container, ensuring minimal load times for scripts
+RUN julia -e 'using Pkg; Pkg.activate("."); Pkg.instantiate()'
+
 ENTRYPOINT [ "julia" ]
