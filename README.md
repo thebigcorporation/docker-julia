@@ -13,7 +13,7 @@ To run a .jl file located in the local directory on your system,
 execute the following command:
 
 `docker run -it -v "/local/path/to/jl:"/app":shared,ro,z \
-	hihg-um/${USER}/julia /app/`
+	hihg-um/julia /app/`
 
 The container will automatically enter the julia REPL, where users
 can enter the package manager with `]` and activate the julia environment
